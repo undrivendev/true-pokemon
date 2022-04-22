@@ -31,7 +31,7 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddDistributedMemoryCache();
-    builder.Services.Configure<ShakespeareTranslationServiceOptions>(
+    builder.Services.Configure<ShakespeareTranslationRepositoryOptions>(
         builder.Configuration.GetSection("ShakespeareTranslationService"));
     builder.Services.AddHttpClient(nameof(ShakespeareTranslationRepository))
         .AddPolicyHandler(Constants.DefaultRetryPolicy);

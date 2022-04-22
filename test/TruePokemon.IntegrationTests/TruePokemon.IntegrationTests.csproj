@@ -8,7 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.4" />
@@ -27,5 +26,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\TruePokemon.Api\TruePokemon.Api.csproj" />
         <ProjectReference Include="..\..\src\TruePokemon.Infrastructure\TruePokemon.Infrastructure.csproj" />
+        <ProjectReference Include="..\TruePokemon.Tests.Common\TruePokemon.Tests.Common.csproj" />
     </ItemGroup>
 </Project>

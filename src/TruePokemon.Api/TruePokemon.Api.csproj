@@ -31,8 +31,4 @@
         <ProjectReference Include="..\TruePokemon.Infrastructure\TruePokemon.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers\Responses" />
-    </ItemGroup>
-
 </Project>

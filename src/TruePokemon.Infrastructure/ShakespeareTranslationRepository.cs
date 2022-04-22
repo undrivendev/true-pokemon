@@ -10,7 +10,7 @@ public class ShakespeareTranslationRepository : BaseApi, ITranslationRepository
 {
     public ShakespeareTranslationRepository(
         IHttpClientFactory httpClientFactory,
-        IOptionsMonitor<ShakespeareTranslationServiceOptions> options)
+        IOptionsMonitor<ShakespeareTranslationRepositoryOptions> options)
         : base(httpClientFactory, options)
     {
     }

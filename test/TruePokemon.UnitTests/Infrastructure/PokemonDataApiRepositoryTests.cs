@@ -9,6 +9,7 @@ using Moq;
 using TruePokemon.Application.Queries;
 using TruePokemon.Core.Abstractions;
 using TruePokemon.Infrastructure;
+using TruePokemon.Tests.Common;
 using Xunit;
 
 namespace TruePokemon.UnitTests.Infrastructure;
