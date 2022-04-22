@@ -9,6 +9,8 @@
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.6.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="Moq" Version="4.17.2" />
         <PackageReference Include="xunit" Version="2.4.1" />
@@ -25,6 +27,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\TruePokemon.Application\TruePokemon.Application.csproj" />
         <ProjectReference Include="..\..\src\TruePokemon.Core\TruePokemon.Core.csproj" />
+        <ProjectReference Include="..\..\src\TruePokemon.Infrastructure\TruePokemon.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

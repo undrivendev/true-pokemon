@@ -18,9 +18,17 @@ public class CustomersControllerTests : IClassFixture<AppWebApplicationFactory>
     }
 
 
-    [Fact]
-    public async Task GetById_ValidRequest_ReturnsCorrectly()
-    {
-        
-    }
+    // [Fact]
+    // public async Task GetById_ValidRequest_ReturnsCorrectly()
+    // {
+    //     var response = await _client.GetAsync("/api/pokemon/charizard");
+    //     response.EnsureSuccessStatusCode();
+    //
+    //     var customer = await response.Content.ReadFromJsonAsync<Customer>();
+    //
+    //     customer.Should().NotBeNull();
+    //     customer.Id.Should().Be(1);
+    //     customer.Name.Should().Be("John");
+    //     customer.Email.Should().Be("
+    // }
 }

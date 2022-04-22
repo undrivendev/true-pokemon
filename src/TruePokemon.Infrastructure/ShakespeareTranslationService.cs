@@ -6,9 +6,9 @@ using TruePokemon.Core.Abstractions;
 
 namespace TruePokemon.Infrastructure;
 
-public class ShakespeareTranslationService : BaseApi, ITranslationService
+public class ShakespeareTranslationRepository : BaseApi, ITranslationRepository
 {
-    public ShakespeareTranslationService(
+    public ShakespeareTranslationRepository(
         IHttpClientFactory httpClientFactory,
         IOptionsMonitor<ShakespeareTranslationServiceOptions> options)
         : base(httpClientFactory, options)
@@ -17,7 +17,7 @@ public class ShakespeareTranslationService : BaseApi, ITranslationService
 
     public async Task<string?> Translate(string input, CancellationToken cancellationToken = default)
     {
-        var client = GetHttpClient(nameof(ShakespeareTranslationService));
+        var client = GetHttpClient(nameof(ShakespeareTranslationRepository));
         var resultObj = await client.GetFromJsonAsync<JsonNode>(
             $"shakespeare.json?text={HttpUtility.JavaScriptStringEncode(input)}",
             cancellationToken);

@@ -7,12 +7,12 @@ namespace TruePokemon.Application.Queries;
 public class PokemonQueryHandler : IQueryHandler<GetPokemonTranslationByNameQuery, PokemonTranslation>
 {
     private readonly IPokemonDataRepository _pokemonDataRepository;
-    private readonly ITranslationService _translationService;
+    private readonly ITranslationRepository _translationRepository;
 
-    public PokemonQueryHandler(IPokemonDataRepository pokemonDataRepository, ITranslationService translationService)
+    public PokemonQueryHandler(IPokemonDataRepository pokemonDataRepository, ITranslationRepository translationRepository)
     {
         _pokemonDataRepository = pokemonDataRepository;
-        _translationService = translationService;
+        _translationRepository = translationRepository;
     }
 
     public async Task<PokemonTranslation> Handle(
@@ -25,7 +25,7 @@ public class PokemonQueryHandler : IQueryHandler<GetPokemonTranslationByNameQuer
             var description = await _pokemonDataRepository.GetSpeciesDescription(query.Name, cancellationToken);
             if (!string.IsNullOrWhiteSpace(description))
             {
-                translation = await _translationService.Translate(description, cancellationToken);
+                translation = await _translationRepository.Translate(description, cancellationToken);
             }
         }
         catch (Exception e)
