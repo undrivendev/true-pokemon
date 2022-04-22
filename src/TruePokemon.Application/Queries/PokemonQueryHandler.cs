@@ -1,18 +1,39 @@
-using TruePokemon.Application.Customers.Queries;
-using TruePokemon.Core.Customers;
+using TruePokemon.Core.Abstractions;
 using TruePokemon.Core.Mediator;
+using TruePokemon.Core.Models;
 
-namespace TruePokemon.Application.Customers;
+namespace TruePokemon.Application.Queries;
 
-public class CustomerQueryHandler : IQueryHandler<GetCustomerByIdQuery, Customer>
+public class PokemonQueryHandler : IQueryHandler<GetPokemonTranslationByNameQuery, PokemonTranslation>
 {
-    private readonly ICustomerReadRepository _customerReadRepository;
+    private readonly IPokemonDataRepository _pokemonDataRepository;
+    private readonly ITranslationService _translationService;
 
-    public CustomerQueryHandler(ICustomerReadRepository customerReadRepository)
+    public PokemonQueryHandler(IPokemonDataRepository pokemonDataRepository, ITranslationService translationService)
     {
-        _customerReadRepository = customerReadRepository;
+        _pokemonDataRepository = pokemonDataRepository;
+        _translationService = translationService;
     }
 
-    public Task<Customer> Handle(GetCustomerByIdQuery query, CancellationToken cancellationToken = default)
-        => _customerReadRepository.GetById(query.Id);
+    public async Task<PokemonTranslation> Handle(
+        GetPokemonTranslationByNameQuery query,
+        CancellationToken cancellationToken = default)
+    {
+        var translation = Constants.FallbackTranslation;
+        try
+        {
+            var description = await _pokemonDataRepository.GetSpeciesDescription(query.Name, cancellationToken);
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                translation = await _translationService.Translate(description, cancellationToken);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            // don't throw, return fallback value
+        }
+
+        return new PokemonTranslation(query.Name, translation);
+    }
 }

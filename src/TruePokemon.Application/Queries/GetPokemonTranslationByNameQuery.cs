@@ -1,6 +1,6 @@
-using TruePokemon.Core.Customers;
 using TruePokemon.Core.Mediator;
+using TruePokemon.Core.Models;
 
 namespace TruePokemon.Application.Queries;
 
-public record GetCustomerByIdQuery(int Id) : IQuery<Customer>;
+public record GetPokemonTranslationByNameQuery(string Name) : IQuery<PokemonTranslation>;

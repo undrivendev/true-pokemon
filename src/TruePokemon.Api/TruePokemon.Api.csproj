@@ -4,11 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>WebApiTemplate.Api</RootNamespace>
+        <RootNamespace>TruePokemon.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="WebApiTemplate.IntegrationTests" />
+        <InternalsVisibleTo Include="TruePokemon.IntegrationTests" />
     </ItemGroup>
 
     <ItemGroup>
@@ -16,6 +16,9 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.4" />
+        <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
         <PackageReference Include="SimpleInjector" Version="5.3.3" />
         <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="5.3.0" />
@@ -26,6 +29,10 @@
         <ProjectReference Include="..\TruePokemon.Application\TruePokemon.Application.csproj" />
         <ProjectReference Include="..\TruePokemon.Core\TruePokemon.Core.csproj" />
         <ProjectReference Include="..\TruePokemon.Infrastructure\TruePokemon.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers\Responses" />
     </ItemGroup>
 
 </Project>

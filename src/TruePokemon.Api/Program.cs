@@ -1,16 +1,14 @@
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using SimpleInjector;
 using TruePokemon.Api;
 using TruePokemon.Application;
-using TruePokemon.Application.Customers;
-using TruePokemon.Core;
-using TruePokemon.Core.Customers;
+using TruePokemon.Application.Queries;
+using TruePokemon.Core.Abstractions;
 using TruePokemon.Core.Mediator;
 using TruePokemon.Core.Mediator.DependencyInjection;
-using TruePokemon.Infrastructure.Customers;
-using TruePokemon.Infrastructure.Persistence;
+using TruePokemon.Infrastructure;
+using Constants = TruePokemon.Application.Constants;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -32,41 +30,32 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-// persistence
-    builder.Services.Configure<ReadRepositoryOptions>(builder.Configuration.GetSection("Repository"));
-    builder.Services.Configure<WriteRepositoryOptions>(builder.Configuration.GetSection("Repository"));
-    builder.Services.AddDbContextFactory<AppDbContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetSection("Repository").Get<WriteRepositoryOptions>().ConnectionString
-                          ?? throw new ArgumentNullException("connectionString"))
-            .UseSnakeCaseNamingConvention());
     builder.Services.AddDistributedMemoryCache();
+    builder.Services.Configure<ShakespeareTranslationServiceOptions>(
+        builder.Configuration.GetSection("ShakespeareTranslationService"));
+    builder.Services.AddHttpClient(nameof(ShakespeareTranslationService))
+        .AddPolicyHandler(Constants.DefaultRetryPolicy);
+    builder.Services.Configure<PokemonDataApiRepositoryOptions>(
+        builder.Configuration.GetSection("PokemonDataApiRepository"));
+    builder.Services.AddHttpClient(nameof(PokemonDataApiRepository))
+        .AddPolicyHandler(Constants.DefaultRetryPolicy);
 
 // SimpleInjector
     var container = new Container();
-    container.Options.DefaultLifestyle = Lifestyle.Singleton;
+    container.Options.DefaultLifestyle = Lifestyle.Transient;
     builder.Services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
-    container.Register<ICustomerReadRepository, CustomerReadRepository>();
-    container.Register<ICustomerWriteRepository, CustomerWriteRepository>();
-    container.Register<IUnitOfWorkFactory, UnitOfWorkFactory>();
-
 // mediator
     container.Register<IContainer>(() => new ContainerServiceProviderWrapper(container));
     container.Register<IMediator, Mediator>();
+    container.Register<IPokemonDataRepository, PokemonDataApiRepository>();
+    container.Register<ITranslationService, ShakespeareTranslationService>();
 
 // mediator handlers
     container.Register(
-        typeof(ICommandHandler<,>),
-        typeof(CustomerCommandHandler).Assembly);
-
-    container.Register(
         typeof(IQueryHandler<,>),
-        typeof(CustomerQueryHandler).Assembly);
+        typeof(PokemonQueryHandler).Assembly);
 
 // handlers decorators
-    container.RegisterDecorator(
-        typeof(ICommandHandler<,>),
-        typeof(CommandHandlerLoggingDecorator<,>));
-
     container.RegisterDecorator(
         typeof(IQueryHandler<,>),
         typeof(QueryHandlerLoggingDecorator<,>));
@@ -78,16 +67,6 @@ try
     var app = builder.Build();
 
     app.Services.UseSimpleInjector(container);
-
-// Apply pending EF Core migrations automatically in development mode.
-// To do that in production, especially in multi-instance scenarios, you need
-// to make sure that migrations are applied as a separate deploy step to prevent data corruption.
-    if (app.Environment.IsDevelopment())
-    {
-        await using var scope = app.Services.CreateAsyncScope();
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        await context.Database.MigrateAsync();
-    }
 
     app.UseSerilogRequestLogging();
 

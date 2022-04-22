@@ -1,13 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using TruePokemon.Api.Customers.Requests;
-using TruePokemon.Api.Customers.Responses;
-using TruePokemon.Application.Customers.Commands;
-using TruePokemon.Application.Customers.Queries;
-using TruePokemon.Core;
-using TruePokemon.Core.Customers;
+using TruePokemon.Application.Queries;
 using TruePokemon.Core.Mediator;
+using TruePokemon.Core.Models;
 
-namespace TruePokemon.Api.Pokemon;
+namespace TruePokemon.Api.Controllers;
 
 public class PokemonController : AppControllerBase
 {
@@ -18,10 +14,7 @@ public class PokemonController : AppControllerBase
 
     [HttpGet]
     [Route("{name}")]
-    public async Task<ActionResult<PokemonTranslationResponse>> Create(string name)
-    {
-        var id = await _mediator.SendCommand<CreateCustomerCommand, int>(
-            new CreateCustomerCommand(request.ToDomainEntity()));
-        return CreatedAtAction(nameof(Get), new { id }, new PokemonTranslationResponse(id));
-    }
+    public async Task<ActionResult<PokemonTranslation>> Get(string name) =>
+        await _mediator.SendQuery<GetPokemonTranslationByNameQuery, PokemonTranslation>(
+            new GetPokemonTranslationByNameQuery(name));
 }
