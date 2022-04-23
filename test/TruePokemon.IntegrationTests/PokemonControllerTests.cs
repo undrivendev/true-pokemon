@@ -69,7 +69,7 @@ public class CustomersControllerTests : IClassFixture<AppWebApplicationFactory>
 
                     var clientFactory = new Mock<IHttpClientFactory>();
                     clientFactory.Setup(x => x.CreateClient(It.IsAny<string>()))
-                        .Returns(new HttpClient(handler));
+                        .Returns(() => new HttpClient(handler));
                     services.AddTransient(_ => clientFactory.Object);
                 });
             })
