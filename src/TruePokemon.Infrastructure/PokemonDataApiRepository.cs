@@ -29,6 +29,17 @@ public class PokemonDataApiRepository : BaseApi, IPokemonDataRepository
             new Uri(speciesUrl),
             cancellationToken);
 
-        return speciesObj?["flavor_text_entries"]?[0]?["flavor_text"]?.ToString();
+        var tempDescription = speciesObj?["flavor_text_entries"]?[0]?["flavor_text"]?.ToString();
+        return DecodeDescription(tempDescription);
+    }
+
+    private static string? DecodeDescription(string? input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return null;
+        }
+
+        return input.Replace('\n', ' ').Replace('\f', ' ');
     }
 }
