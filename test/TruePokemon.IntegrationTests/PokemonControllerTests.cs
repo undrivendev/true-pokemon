@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 using TruePokemon.Core.Models;
 using TruePokemon.Infrastructure;
@@ -22,12 +19,10 @@ namespace TruePokemon.IntegrationTests;
 public class CustomersControllerTests : IClassFixture<AppWebApplicationFactory>
 {
     private readonly AppWebApplicationFactory _factory;
-    private readonly HttpClient _client;
 
     public CustomersControllerTests(AppWebApplicationFactory factory)
     {
         _factory = factory;
-        _client = factory.CreateClient();
     }
 
 
@@ -43,8 +38,6 @@ public class CustomersControllerTests : IClassFixture<AppWebApplicationFactory>
                 {
                     var typesToRemove = new[]
                     {
-                        typeof(IOptionsMonitor<PokemonDataApiRepositoryOptions>),
-                        typeof(IOptionsMonitor<ShakespeareTranslationRepositoryOptions>),
                         typeof(IHttpClientFactory),
                     };
                     var descriptors = services.Where(
@@ -56,17 +49,14 @@ public class CustomersControllerTests : IClassFixture<AppWebApplicationFactory>
                         services.Remove(des);
                     }
 
+                    Program.Container.Options.AllowOverridingRegistrations = true;
                     var optionsData = new PokemonDataApiRepositoryOptions
                         { BaseUrl = new Uri("http://localhost:5000") };
-                    var optionsDataMonitor = new Mock<IOptionsMonitor<PokemonDataApiRepositoryOptions>>();
-                    optionsDataMonitor.Setup(x => x.CurrentValue).Returns(optionsData);
-                    services.AddTransient(_ => optionsDataMonitor.Object);
+                    Program.Container.Register(() => optionsData);
 
-                    var optionsTrans = new ShakespeareTranslationRepositoryOptions
+                    var optionsTrans = new ShakespeareTranslationApiRepositoryOptions
                         { BaseUrl = new Uri("http://localhost:5001") };
-                    var optionsTransMonitor = new Mock<IOptionsMonitor<ShakespeareTranslationRepositoryOptions>>();
-                    optionsTransMonitor.Setup(x => x.CurrentValue).Returns(optionsTrans);
-                    services.AddTransient(_ => optionsTransMonitor.Object);
+                    Program.Container.Register(() => optionsTrans);
 
                     var handler = new MockHttpClientHandler();
                     handler.AddMockResponse(new Uri(optionsData.BaseUrl, $"pokemon/{pokemonName}"), HttpStatusCode.OK,
@@ -87,7 +77,7 @@ public class CustomersControllerTests : IClassFixture<AppWebApplicationFactory>
 
 
         // Act
-        var response = await _client.GetFromJsonAsync<PokemonTranslation>($"pokemon/{pokemonName}");
+        var response = await client.GetFromJsonAsync<PokemonTranslation>($"pokemon/{pokemonName}");
 
         // Assert
         response.Should().NotBeNull();

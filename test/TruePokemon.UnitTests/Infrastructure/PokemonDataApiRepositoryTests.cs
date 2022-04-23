@@ -23,8 +23,6 @@ public class PokemonDataApiRepositoryTests
         var pokemonName = "ditto";
         var expected = "Expected value";
         var options = new PokemonDataApiRepositoryOptions { BaseUrl = new Uri("http://localhost:5000") };
-        var optionsMonitor = new Mock<IOptionsMonitor<PokemonDataApiRepositoryOptions>>();
-        optionsMonitor.Setup(x => x.CurrentValue).Returns(options);
 
         var handler = new MockHttpClientHandler();
         handler.AddMockResponse(new Uri(options.BaseUrl, $"pokemon/{pokemonName}"), HttpStatusCode.OK,
@@ -36,7 +34,7 @@ public class PokemonDataApiRepositoryTests
         clientFactory.Setup(x => x.CreateClient(It.IsAny<string>()))
             .Returns(new HttpClient(handler));
 
-        var sut = new PokemonDataApiRepository(clientFactory.Object, optionsMonitor.Object);
+        var sut = new PokemonDataApiRepository(clientFactory.Object, options);
 
         // Act
         var result = await sut.GetSpeciesDescription(pokemonName);

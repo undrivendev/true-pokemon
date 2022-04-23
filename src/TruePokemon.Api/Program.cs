@@ -31,24 +31,29 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddDistributedMemoryCache();
-    builder.Services.Configure<ShakespeareTranslationRepositoryOptions>(
-        builder.Configuration.GetSection("ShakespeareTranslationService"));
-    builder.Services.AddHttpClient(nameof(ShakespeareTranslationRepository))
+    builder.Services.AddHttpClient(nameof(ShakespeareTranslationApiRepository))
         .AddPolicyHandler(Constants.DefaultRetryPolicy);
-    builder.Services.Configure<PokemonDataApiRepositoryOptions>(
-        builder.Configuration.GetSection("PokemonDataApiRepository"));
     builder.Services.AddHttpClient(nameof(PokemonDataApiRepository))
         .AddPolicyHandler(Constants.DefaultRetryPolicy);
 
 // SimpleInjector
-    var container = new Container();
+    var container = Container;
     container.Options.DefaultLifestyle = Lifestyle.Transient;
     builder.Services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
 // mediator
     container.Register<IContainer>(() => new ContainerServiceProviderWrapper(container));
     container.Register<IMediator, Mediator>();
+    container.Register(() =>
+            builder.Configuration.GetSection("ShakespeareTranslationApiRepository")
+                .Get<ShakespeareTranslationApiRepositoryOptions>(),
+        Lifestyle.Scoped);
     container.Register<IPokemonDataRepository, PokemonDataApiRepository>();
-    container.Register<ITranslationRepository, ShakespeareTranslationRepository>();
+    container.Register(() =>
+            builder.Configuration.GetSection("PokemonDataApiRepository")
+                .Get<PokemonDataApiRepositoryOptions>(),
+        Lifestyle.Scoped);
+    container.Register<ITranslationRepository, ShakespeareTranslationApiRepository>();
+
 
 // mediator handlers
     container.Register(
@@ -102,4 +107,5 @@ finally
 
 public partial class Program
 {
+    public static readonly Container Container = new();
 }

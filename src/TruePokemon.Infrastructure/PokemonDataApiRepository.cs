@@ -9,7 +9,7 @@ public class PokemonDataApiRepository : BaseApi, IPokemonDataRepository
 {
     public PokemonDataApiRepository(
         IHttpClientFactory httpClientFactory,
-        IOptionsMonitor<PokemonDataApiRepositoryOptions> options) : base(httpClientFactory, options)
+        PokemonDataApiRepositoryOptions options) : base(httpClientFactory, options)
     {
     }
 

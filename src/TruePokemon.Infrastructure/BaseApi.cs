@@ -6,19 +6,19 @@ namespace TruePokemon.Infrastructure;
 public abstract class BaseApi
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IOptionsMonitor<BaseApiOptions> _optionsMonitor;
+    private readonly BaseApiOptions _options;
 
-    protected BaseApi(IHttpClientFactory httpClientFactory, IOptionsMonitor<BaseApiOptions> optionsMonitor)
+    protected BaseApi(IHttpClientFactory httpClientFactory, BaseApiOptions options)
     {
         _httpClientFactory = httpClientFactory;
-        _optionsMonitor = optionsMonitor;
+        _options = options;
     }
 
     protected HttpClient GetHttpClient(string name)
     {
         var client = _httpClientFactory.CreateClient(name);
-        client.BaseAddress = _optionsMonitor.CurrentValue.BaseUrl;
-        client.DefaultRequestVersion = Version.TryParse(_optionsMonitor.CurrentValue.HttpVersion, out var parsedVersion)
+        client.BaseAddress = _options.BaseUrl;
+        client.DefaultRequestVersion = Version.TryParse(_options.HttpVersion, out var parsedVersion)
             ? parsedVersion
             : Constants.DefaultHttpVersion;
         return client;
