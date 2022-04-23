@@ -49,8 +49,8 @@ NOTE: if, for some reason, it's not possible to get the translation, it will ret
 - Simple [Mediator](https://en.wikipedia.org/wiki/Mediator_pattern) abstraction for CQRS and no-magic, in-memory implementation relying on the standard `IServiceProvider` DI container abstraction (~50 lines of code)
 - [SimpleInjector](https://github.com/simpleinjector/SimpleInjector) open-source DI container integration for advanced service registration scenarios
 - [Aspect-oriented programming](https://en.wikipedia.org/wiki/Aspect-oriented_programming) using [Decorators](https://en.wikipedia.org/wiki/Decorator_pattern) on the above-mentioned mediator
-  - [Logging](src/WebApiTemplate.Application/CommandHandlerLoggingDecorator.cs)
-  - [Caching](src/WebApiTemplate.Application/QueryHandlerCachingDecorator.cs)
+  - [Logging](src/TruePokemon.Application/QueryHandlerLoggingDecorator.cs)
+  - [Caching](src/TruePokemon.Application/QueryHandlerCachingDecorator.cs)
 - Resilient `HttpClient` instances with exponential backoff + jitter retry policy using Polly
 - Structured logging using the standard [MEL](https://github.com/dotnet/runtime/tree/main/src/libraries/Microsoft.Extensions.Logging.Abstractions) interface with the open-source [Serilog](https://github.com/serilog/serilog) logging library implementation
 - Testing: separate projects for Unit and Integration tests (libraries used: xUnit, FluentAssertions)
