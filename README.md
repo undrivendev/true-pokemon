@@ -1,6 +1,6 @@
-# True Pokemon Server
+# True Pokémon Server
 
-This is showcase project exposing a single API that, given a pokemon name, will return a description in 'Shakespearean' terms.
+This is showcase project exposing a single API that, given a pokémon name, will return a description in 'Shakespearean' terms.
 
 NOTE: this project has a level of complexity that I wouldn't necessarily recommend for an API with simple requirements like this one: this is meant to showcase how I would approach building a solution for a reasonably-sized project.
 
@@ -31,13 +31,13 @@ NOTE: if, for some reason, it's not possible to get the translation, it will ret
 - Run it:
   - Run with an IDE:
     - Install Visual Studio or Rider.
-    - Just open the `TruePokemon.sln` file and run the `TruePokemon.Api.csproj` project, it should start listening on the port `5000`
+    - Just open the `TruePokemon.sln` file and run the `TruePokemon.Api.csproj` project in development mode, it should start the API listening on the port `5000`
   - Run with Docker:
     - Install Docker
     - Via terminal, cd into the solution folder and Build the image via `docker build -t true-pokemon -f src/TruePokemon.Api/Dockerfile .`
     - Run it with: `docker run -p 5000:5000 true-pokemon`
 - Test it using the built-in Swagger documentation at `http://localhost:5000/swagger/index.html`
-- You should clone [the frontend repo](https://github.com/undrivendev/true-pokemon-react-app) and use it together
+- You should clone [the frontend repo](https://github.com/undrivendev/true-pokemon-react-app) and use them together
 
 ## Features
 
