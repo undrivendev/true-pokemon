@@ -19,7 +19,7 @@ public class PokemonQueryHandler : IQueryHandler<GetPokemonTranslationByNameQuer
         GetPokemonTranslationByNameQuery query,
         CancellationToken cancellationToken = default)
     {
-        var translation = Constants.FallbackTranslation;
+        string? translation = null;
         try
         {
             var description = await _pokemonDataRepository.GetSpeciesDescription(query.Name, cancellationToken);
@@ -34,6 +34,6 @@ public class PokemonQueryHandler : IQueryHandler<GetPokemonTranslationByNameQuer
             // don't throw, return fallback value
         }
 
-        return new PokemonTranslation(query.Name, translation);
+        return new PokemonTranslation(query.Name, translation ?? Constants.FallbackTranslation);
     }
 }
