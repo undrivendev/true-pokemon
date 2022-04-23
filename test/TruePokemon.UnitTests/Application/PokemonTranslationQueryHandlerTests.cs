@@ -20,7 +20,7 @@ public class PokemonTranslationQueryHandlerTests
                 It.IsAny<string>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync("Sample description");
-        var translationRepo = new Mock<ITranslationRepository>();
+        var translationRepo = new Mock<ITranslationService>();
         translationRepo.Setup(x => x.Translate(
                 It.Is<string>(y => y == "Sample description"),
                 It.IsAny<CancellationToken>()))

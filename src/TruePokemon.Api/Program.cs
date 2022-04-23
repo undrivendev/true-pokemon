@@ -31,7 +31,7 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddDistributedMemoryCache();
-    builder.Services.AddHttpClient(nameof(ShakespeareTranslationApiRepository))
+    builder.Services.AddHttpClient(nameof(ShakespeareTranslationApiService))
         .AddPolicyHandler(Constants.DefaultRetryPolicy);
     builder.Services.AddHttpClient(nameof(PokemonDataApiRepository))
         .AddPolicyHandler(Constants.DefaultRetryPolicy);
@@ -44,7 +44,7 @@ try
     container.Register<IContainer>(() => new ContainerServiceProviderWrapper(container));
     container.Register<IMediator, Mediator>();
     container.Register(() =>
-            builder.Configuration.GetSection("ShakespeareTranslationApiRepository")
+            builder.Configuration.GetSection("ShakespeareTranslationApiService")
                 .Get<ShakespeareTranslationApiRepositoryOptions>(),
         Lifestyle.Scoped);
     container.Register<IPokemonDataRepository, PokemonDataApiRepository>();
@@ -52,7 +52,7 @@ try
             builder.Configuration.GetSection("PokemonDataApiRepository")
                 .Get<PokemonDataApiRepositoryOptions>(),
         Lifestyle.Scoped);
-    container.Register<ITranslationRepository, ShakespeareTranslationApiRepository>();
+    container.Register<ITranslationService, ShakespeareTranslationApiService>();
 
 
 // mediator handlers
