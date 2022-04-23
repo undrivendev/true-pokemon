@@ -19,7 +19,7 @@ Response:
 }
 ```
 
-### Usage
+## How to run this project
 - Clone the repo
 - Run it:
   - Run with an IDE:
@@ -30,6 +30,7 @@ Response:
     - Via terminal, cd into the solution folder and Build the image via   `docker build -t true-pokemon -f src/TruePokemon.Api/Dockerfile .`
     - Run it with: `docker run -p 5000:5000 true-pokemon`
 - Test it using the built-in Swagger documentation at `http://localhost:5000/swagger/index.html`
+- You should clone [the frontend repo](https://github.com/undrivendev/true-pokemon-react-app) and use it together
 
 ## Features
 - Project structure following [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) principles
@@ -47,8 +48,9 @@ Response:
 - Testing: separate projects for Unit and Integration tests (libraries used: xUnit, FluentAssertions)
 - Docker support: [Dockerfile](src/TruePokemon.Api/Dockerfile)
 
-## Next steps
-- Authentication
+## TODO
+- Authentication?
 - Automated build and release pipelines
+- Prod release configuration adjustments
 - Browser caching 
 - Docker-compose
