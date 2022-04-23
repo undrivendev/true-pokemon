@@ -1,17 +1,21 @@
+# True Pokemon Server
+
+This is showcase project exposing a single API that, given a pokemon name, will return a description in 'Shakespearean' terms.
+
 NOTE: this project has a level of complexity that I wouldn't necessarily recommend for an API with simple requirements like this one: this is meant to showcase how I would approach building a solution for a reasonably-sized project.
 
 The project is based on the template I'm building [on my other repo](https://github.com/undrivendev/template-webapi-aspnet).
 
-## What is it?
-This is showcase project exposing a single API that, given a pokemon name,  will return a description in 'Shakespearean' terms.
+There is a frontend for this API living [on this other repo](https://github.com/undrivendev/true-pokemon-react-app).
 
-### Example
+## Example
 
-Request: 
+Request:
 
 `GET http://localhost:5000/pokemon/pikachu`
 
 Response:
+
 ```
 {
   "name": "pikachu",
@@ -19,7 +23,10 @@ Response:
 }
 ```
 
+NOTE: if, for some reason, it's not possible to get the translation, it will return a default one.
+
 ## How to run this project
+
 - Clone the repo
 - Run it:
   - Run with an IDE:
@@ -27,12 +34,13 @@ Response:
     - Just open the `TruePokemon.sln` file and run the `TruePokemon.Api.csproj` project, it should start listening on the port `5000`
   - Run with Docker:
     - Install Docker
-    - Via terminal, cd into the solution folder and Build the image via   `docker build -t true-pokemon -f src/TruePokemon.Api/Dockerfile .`
+    - Via terminal, cd into the solution folder and Build the image via `docker build -t true-pokemon -f src/TruePokemon.Api/Dockerfile .`
     - Run it with: `docker run -p 5000:5000 true-pokemon`
 - Test it using the built-in Swagger documentation at `http://localhost:5000/swagger/index.html`
 - You should clone [the frontend repo](https://github.com/undrivendev/true-pokemon-react-app) and use it together
 
 ## Features
+
 - Project structure following [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) principles
 - Based on .NET 6 for Long Term Support
 - Simplified .NET 6 startup hosting model
@@ -49,8 +57,10 @@ Response:
 - Docker support: [Dockerfile](src/TruePokemon.Api/Dockerfile)
 
 ## TODO
+
+- More testing
 - Authentication?
 - Automated build and release pipelines
 - Prod release configuration adjustments
-- Browser caching 
+- Browser caching
 - Docker-compose
