@@ -1,6 +1,6 @@
 # True Pokémon Server
 
-This is showcase project exposing a single API that, given a pokémon name, will return a description in 'Shakespearean' terms.
+This is a showcase project exposing a single API that, given a pokémon name, will return a description in 'Shakespearean' terms.
 
 NOTE: this project has a level of complexity that I wouldn't necessarily recommend for an API with simple requirements like this one: this is meant to showcase how I would approach building a solution for a reasonably-sized project. The logic is basically contained in the [PokemonQueryHandler](src/TruePokemon.Application/Queries/PokemonQueryHandler.cs) class.
 
