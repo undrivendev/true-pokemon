@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using TruePokemon.Application.Queries;
 using TruePokemon.Core.Mediator;
@@ -14,7 +15,7 @@ public class PokemonController : AppControllerBase
 
     [HttpGet]
     [Route("{name}")]
-    public async Task<ActionResult<PokemonTranslation>> Get(string name) =>
+    public async Task<ActionResult<PokemonTranslation>> Get([StringLength(20)] string name) =>
         await _mediator.SendQuery<GetPokemonTranslationByNameQuery, PokemonTranslation>(
             new GetPokemonTranslationByNameQuery(name));
 }
