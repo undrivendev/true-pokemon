@@ -19,7 +19,7 @@ public class ShakespeareTranslationApiService : BaseApi, ITranslationService
     {
         var client = GetHttpClient(nameof(ShakespeareTranslationApiService));
         var resultObj = await client.GetFromJsonAsync<JsonNode>(
-            $"shakespeare.json?text={HttpUtility.JavaScriptStringEncode(input)}",
+            $"shakespeare.json?text={input}",
             cancellationToken);
         return resultObj?["contents"]?["translated"]?.ToString();
     }
